@@ -1,39 +1,47 @@
+#![feature(lang_items)]
+#![no_std]
+#![no_main]
 
-// IO Probe
-enum Probe {
-    Binary {port: i32, pin: i32},
-    Freq {port: i32, pin: i32}
+extern crate sam3x;
+
+use sam3x::*;
+use sam3x::pio;
+use sam3x::rtt;
+
+mod automata;
+mod led_toggle_system;
+
+
+#[link_section=".vectors"]
+pub static VECTOR_TABLE: VectorTable =
+    VectorTable {
+        reset_handler : start,
+        exceptions    : [0; 14],
+    };
+
+
+/// Main function connected to the reset handler
+/// Arduino Led is connected to the controller B, line 27
+fn start() -> ! {
+    let system = build_system();
+    let mut state = system.init_state;
+
+    loop {
+        let t = find_transition(system, state);
+        execute_action(t.action);
+        wait(1);
+        state = t.end_state;
+        if check_state(state) {
+            error();
+        }
+        wait(100);
+    }
 }
 
-// Board state
-struct State {
-    led1 : bool
-}
+#[lang = "panic_fmt"]
+#[no_mangle]
+pub extern "C" fn panic_fmt() -> ! { loop {} }
 
-struct Model {
-    states: Vec<State>,
-    transitions: Vec<(i32, i32)>
-}
-
-// List of probes
-static PROBES: Vec<Probe> = vec![Binary { port: 1, pin: 3}];
-
-// Model board under test behaviour
-static MODEL: Model = Model {
-    states : State { led1: true },
-    transitions: vec![]
-};
-
-// Measure state on board IO
-fn measure_state(probes: &Vec<Probe>) -> State {
-
-}
-
-// Check if this state change is valid according to the model
-fn assert_transition(state1: &State, state2: &State, model: &Model) -> bool {
-
-}
-
-fn main() {
-    println!("Hello, world!");
-}
+// This function is needed by arm exception handling routines.
+#[no_mangle] pub extern fn __aeabi_unwind_cpp_pr0() { loop {} }
+#[no_mangle] pub extern fn __aeabi_unwind_cpp_pr1() { loop {} }
