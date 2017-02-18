@@ -1,4 +1,8 @@
-/// Implementation of testing system for led toggle
+/// In the future this will be written as test script in custom language
+/// But know the model is build in the code
+
+use automata::System;
+
 
 // state1 = "Led off"
 // state2 = "Led on"
