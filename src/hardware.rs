@@ -1,12 +1,11 @@
 
-use automata::{Action, State};
+use automata::{State};
 
 
 /// Check if all ports have values according to the state
-pub fn check_state(state: &State) -> bool {
+pub fn check_state(_: &State) -> bool {
     false
 }
 
-/// Execute action.
-pub fn execute_action(action: &Action) {
-}
+//pub fn execute_action(action: &Action) {
+//}

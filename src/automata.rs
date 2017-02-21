@@ -55,9 +55,9 @@ impl System {
         &self.states[self.init_state]
     }
 
-    pub fn find_transition(&self, state: &State) -> Option<&Transition> {
-        None
-    }
+//    pub fn find_transition(&self, state: &State) -> Option<&Transition> {
+//        None
+//    }
 }
 
 impl State {

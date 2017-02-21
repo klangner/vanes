@@ -7,7 +7,7 @@ mod systems{
 
 use std::time::Duration;
 use std::thread;
-use hardware::{check_state, execute_action};
+use hardware::{check_state};
 use systems::led_toggle::{build_system};
 
 
@@ -27,13 +27,13 @@ fn main() {
         // The system shouldn't change the state itself.
         assert!(check_state(state), "ERROR: System changed state itself. Expected {:?}", state);
         // What transition go from the current state?
-        system.find_transition(state).map(|t| {
-            execute_action(t.action);
-            // Let wait till the signals will propagate
-            thread::sleep(Duration::from_millis(500));
-            // And check if we are in desired state
+//        system.find_transition(state).map(|t| {
+//            execute_action(t.action);
+//            // Let wait till the signals will propagate
+//            thread::sleep(Duration::from_millis(500));
+//            // And check if we are in desired state
 //            state = t.end_state();
-            assert!(check_state(state), "ERROR: System didn't change the state. Expected {:?}", state);
-        });
+//            assert!(check_state(state), "ERROR: System didn't change the state. Expected {:?}", state);
+//        });
     }
 }
