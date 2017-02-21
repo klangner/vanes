@@ -1,4 +1,6 @@
 
+extern crate sysfs_gpio;
+
 mod automata;
 mod hardware;
 mod systems{
