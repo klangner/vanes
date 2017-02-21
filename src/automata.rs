@@ -3,29 +3,10 @@
 /// initial and end state are index value to states vector.
 #[derive(Debug, PartialEq)]
 pub struct System {
-
     states: Vec<State>,
     actions: Vec<Action>,
     transitions: Vec<Transition>,
-    init_state: u32,
-    end_states: Vec<u32>
-}
-
-impl System {
-    /// Empty system
-    pub fn empty() -> System {
-        System {
-            states: vec![],
-            actions: vec![],
-            transitions: vec![],
-            init_state: 0,
-            end_states: vec![1]
-        }
-    }
-
-    pub fn init_state(&self) -> Option<State> {
-        None
-    }
+    init_state: usize
 }
 
 /// Describe state of the controller
@@ -57,3 +38,37 @@ pub struct PortValue {
     port: u32,
     value: bool
 }
+
+
+impl System {
+    /// Empty system
+    pub fn single_state(state: State) -> System {
+        System {
+            states: vec![state],
+            actions: vec![],
+            transitions: vec![],
+            init_state: 0
+        }
+    }
+
+    pub fn init_state(&self) -> &State {
+        &self.states[self.init_state]
+    }
+
+    pub fn find_transition(&self, state: &State) -> Option<&Transition> {
+        None
+    }
+}
+
+impl State {
+    pub fn new(name: String, outputs: Vec<PortValue>) -> State {
+        State { name: name, outputs: outputs}
+    }
+}
+
+impl PortValue {
+    pub fn new(port: u32, value: bool) -> PortValue {
+        PortValue { port: port, value: value}
+    }
+}
+
