@@ -4,7 +4,7 @@
 ///   - Expects high value on given pin all the time
 
 
-use automata::{PortValue, State, System};
+use automata::{Port, State, System};
 
 
 // state1 = "Led off"
@@ -13,14 +13,10 @@ use automata::{PortValue, State, System};
 // transitions = [(state1, action, state2), (state2, action, state1)
 pub fn build_system() -> System {
 
-    let output_port = PortValue::new(1234, true);
-    let state_a = State::new("A".to_string(), vec![output_port]);
-//    states: Vec<State>,
-//    actions: Vec<Action>,
-//    transitions: Vec<Transition>,
-//    init_state: u32,
-//    end_states: Vec<u32>
+    let led1 = Port::new("Led 1".to_string(), 1234, true);
+    let states = vec![State::new("Led on".to_string(), vec![led1])];
 
-    System::single_state(state_a)
+    System::new(states)
+        .expect("Can't construct system: led toggle")
 }
 

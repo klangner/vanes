@@ -14,7 +14,7 @@ pub struct System {
 pub struct State {
     name: String,
     /// Expected values in this state on the given ports
-    outputs: Vec<PortValue>
+    outputs: Vec<Port>
 }
 
 /// Describe action and how to trigger it
@@ -22,7 +22,7 @@ pub struct State {
 pub struct Action {
     name: String,
     /// Set given value on each port to change state
-    inputs: Vec<PortValue>
+    inputs: Vec<Port>
 }
 
 /// Possible transmission between states with action which triggers this transition.
@@ -34,21 +34,22 @@ pub struct Transition {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct PortValue {
+pub struct Port {
+    name: String,
     port: u32,
     value: bool
 }
 
 
 impl System {
-    /// Empty system
-    pub fn single_state(state: State) -> System {
-        System {
-            states: vec![state],
+    /// The system will only be constructed if the parameters are correct.
+    pub fn new(states: Vec<State>) -> Result<System, String> {
+        Ok(System {
+            states: states,
             actions: vec![],
             transitions: vec![],
             init_state: 0
-        }
+        })
     }
 
     pub fn init_state(&self) -> &State {
@@ -61,14 +62,14 @@ impl System {
 }
 
 impl State {
-    pub fn new(name: String, outputs: Vec<PortValue>) -> State {
+    pub fn new(name: String, outputs: Vec<Port>) -> State {
         State { name: name, outputs: outputs}
     }
 }
 
-impl PortValue {
-    pub fn new(port: u32, value: bool) -> PortValue {
-        PortValue { port: port, value: value}
+impl Port {
+    pub fn new(name: String, port: u32, value: bool) -> Port {
+        Port { name: name, port: port, value: value}
     }
 }
 
