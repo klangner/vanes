@@ -7,6 +7,15 @@ its outputs.
 ## Installation
  
   * Cross compiling: https://github.com/japaric/rust-cross
+  
+  
+## Features
+  
+  * Define system as collection of states, and transitions between states (State Machine).
+  * Check state of:
+    * Digit pin
+  * Execute action
+    * Set value on digital pin
 
  
 ## Commands
@@ -14,3 +23,7 @@ its outputs.
  ```bash
 cargo build --target=armv7-unknown-linux-gnueabihf
 ```
+
+## Useful links
+
+  * [BeagleBone GPIO mapping](http://beagleboard.org/Support/bone101/#headers)
