@@ -24,7 +24,7 @@ pub struct State {
 pub struct Action {
     pub name: String,
     /// Set given value on each port to change state
-    pub inputs: Vec<Driver>
+    pub drivers: Vec<Driver>
 }
 
 /// Possible transmission between states with action which triggers this transition.
