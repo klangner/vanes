@@ -8,4 +8,5 @@ pub fn check_state(_: &State) -> bool {
 }
 
 pub fn execute_action(action: &Action) {
+    println!("Execute action {:?}", action);
 }
