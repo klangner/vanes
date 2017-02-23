@@ -4,16 +4,14 @@
 ///   - Expects high value on given pin all the time
 
 
-use automata::{Port, State, System};
+use hal::probes::{Probe};
+use automata::{State, System};
 
 
-// state1 = "Led off"
-// state2 = "Led on"
-// action = "button pressed"
-// transitions = [(state1, action, state2), (state2, action, state1)
+// Temporary function. This sould be build from the script
 pub fn build_system<'a>() -> System<'a> {
 
-    let led1 = Port::new("Led 1".to_string(), 1234, true);
+    let led1 = Probe::logic("Led 1".to_string(), 66, true);
     let states = vec![State::new("Led on".to_string(), vec![led1])];
 
     System::new(states, vec![])

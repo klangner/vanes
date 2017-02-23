@@ -1,4 +1,8 @@
 
+use hal::probes::{Probe};
+use hal::drivers::{Driver};
+
+
 /// System Transition definition
 /// initial and end state are index value to states vector.
 #[derive(Debug, PartialEq)]
@@ -12,7 +16,7 @@ pub struct System<'a> {
 pub struct State {
     pub name: String,
     /// Expected values in this state on the given ports
-    pub outputs: Vec<Port>
+    pub probes: Vec<Probe>
 }
 
 /// Describe action and how to trigger it
@@ -20,7 +24,7 @@ pub struct State {
 pub struct Action {
     pub name: String,
     /// Set given value on each port to change state
-    pub inputs: Vec<Port>
+    pub inputs: Vec<Driver>
 }
 
 /// Possible transmission between states with action which triggers this transition.
@@ -30,14 +34,6 @@ pub struct Transition<'a> {
     pub action: Action,
     pub dest: &'a State
 }
-
-#[derive(Debug, PartialEq)]
-pub struct Port {
-    pub name: String,
-    pub port: u32,
-    pub value: bool
-}
-
 
 impl<'a> System<'a> {
     /// The system will only be constructed if the parameters are correct.
@@ -66,17 +62,28 @@ impl<'a> System<'a> {
 }
 
 impl State {
-    pub fn new(name: String, outputs: Vec<Port>) -> State {
-        State { name: name, outputs: outputs}
+    /// Constructor for new state
+    pub fn new(name: String, outputs: Vec<Probe>) -> State {
+        State { name: name, probes: outputs}
+    }
+
+    /// Check if the probe values are equal to expected values
+    pub fn check(&self) -> bool {
+        self.probes.iter().fold(true, |acc, p| {
+            let v = p.has_correct_value();
+            if v == false {
+                println!("Wrong value on probe: {:?}", p);
+            };
+            acc && v
+        })
     }
 }
 
-impl Port {
-    pub fn new(name: String, port: u32, value: bool) -> Port {
-        Port { name: name, port: port, value: value}
+impl Action {
+    pub fn execute(&self) {
+        println!("Execute action {:?}", self);
     }
 }
-
 
 
 /// ------------------------------------------------------------------------------------------------
